@@ -1,0 +1,31 @@
+<div class="checkout-container">
+  <h2>Checkout</h2>
+  <div *ngIf="_cartItems.length > 0">
+    <h3>Cart Items</h3>
+    <ul>
+      <li *ngFor="let item of _cartItems">
+        {{ item.product.name }} : {{ item.quantity }} x ${{ item.product.price }} = ${{ item.product.price * item.quantity }}
+      </li>
+    </ul>
+
+    <h3>Order Summary</h3>
+    <p>Total Items: {{ orderSummary.totalItems }}</p>
+    <p>Total Amount: ${{ orderSummary.totalAmount }}</p>
+    <p>Total Discount: ${{ orderSummary.totalDiscount }}</p>
+    <div *ngIf="orderSummary.discountCodes.length > 0">
+      <h4>Applied Discount Codes:</h4>
+      <ul>
+        <li *ngFor="let code of orderSummary.discountCodes">{{ code.code }} - {{ code.discountPercentage }}% off</li>
+      </ul>
+    </div>
+
+    <!-- Discount Section Here -->
+    <label for="discountCode">Discount Code:</label>
+    <input id="discountCode" [(ngModel)]="_discountCode" placeholder="Enter code" />
+    <button (click)="applyDiscount()">Apply Discount</button>
+    <button (click)="finishOrder()">Finish Order</button>
+  </div>
+  <div *ngIf="_cartItems.length === 0">
+    <p>Your cart is empty.</p>
+  </div>
+</div>

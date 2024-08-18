@@ -1,0 +1,10 @@
+<div class="product-list-container">
+  <div *ngFor="let product of _products" class="product-card">
+    <h3>{{ product.name }}</h3>
+    <p>Price: ${{ product.price }}</p>
+    <p>Selected: {{ getQuantity(product.id) }}</p>
+    <button (click)="addToCart(product)">Add to Cart</button>
+    <button (click)="decrementQuantity(product.id)" *ngIf="getQuantity(product.id) > 0">-</button>
+    <button (click)="incrementQuantity(product.id)">+</button>
+  </div>
+</div>

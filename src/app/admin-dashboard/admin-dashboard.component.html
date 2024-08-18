@@ -1,0 +1,19 @@
+<div class="admin-dashboard-container">
+  <h2>Dashboard Stats for Admin</h2>
+  <table>
+    <thead>
+    <tr>
+      <th>Total Items</th>
+      <th>Total Amount</th>
+      <th>Total Discount</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let order of _orderSummaries">
+      <td>{{ order.totalItems }}</td>
+      <td>${{ order.totalAmount }}</td>
+      <td>${{ order.totalDiscount }}</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
