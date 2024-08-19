@@ -40,13 +40,14 @@ export class CartService {
 
   public decrementQuantity(productId: number): void {
     const currentItems = this.cartItems.getValue();
-    const item = currentItems.find(item => item.product.id === productId);
-    if (item) {
-      if (item.quantity > 1) {
-        item.quantity -= 1;
+    const itemIndex = currentItems.findIndex(item => item.product.id === productId);
+
+    if (itemIndex !== -1) {
+      if (currentItems[itemIndex].quantity > 1) {
+        currentItems[itemIndex].quantity -= 1;
       } else {
         // Remove the item if quantity is 1 and user tries to decrement
-        this.removeFromCart(productId);
+        currentItems.splice(itemIndex, 1);
       }
       this.cartItems.next(currentItems);
     }
@@ -55,6 +56,7 @@ export class CartService {
   public removeFromCart(productId: number): void {
     const currentItems = this.cartItems.getValue();
     const updatedItems = currentItems.filter(item => item.product.id !== productId);
+    console.log(currentItems, updatedItems);
     this.cartItems.next(updatedItems);
   }
 

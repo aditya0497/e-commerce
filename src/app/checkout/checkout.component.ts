@@ -1,6 +1,11 @@
 // src/app/components/checkout/checkout.component.ts
 import { Component, OnInit } from '@angular/core';
-import { CartItem, OrderSummary } from '../models/models';
+import {
+  CartItem,
+  DiscountCode,
+  OrderSummary
+} from "../models/models";
+import {AdminService} from "../services/admin.service";
 import { CartService } from '../services/cart.service';
 import { CheckoutService } from '../services/checkout.service';
 
@@ -15,6 +20,8 @@ export class CheckoutComponent implements OnInit {
 
   public _discountCode: string = '';
 
+  public _availableDiscountCodes: DiscountCode[] = [];
+
   public orderSummary: OrderSummary = {
     totalItems: 0,
     totalAmount: 0,
@@ -23,12 +30,17 @@ export class CheckoutComponent implements OnInit {
   };
 
   constructor(private cartService: CartService,
+    private adminService: AdminService,
     private checkoutService: CheckoutService) {}
 
   public ngOnInit(): void {
     this.cartService.getCartItems().subscribe(items => {
       this._cartItems = items;
       this.calculateTotals();
+    });
+
+    this.checkoutService.getAvailableDiscountCodes().subscribe(codes => {
+      this._availableDiscountCodes = codes;
     });
   }
 

@@ -1,5 +1,7 @@
 <div class="checkout-container">
   <h2>Checkout</h2>
+
+  <!-- Display Cart Items if Available -->
   <div *ngIf="_cartItems.length > 0">
     <h3>Cart Items</h3>
     <ul>
@@ -8,10 +10,13 @@
       </li>
     </ul>
 
+    <!-- Display Order Summary -->
     <h3>Order Summary</h3>
     <p>Total Items: {{ orderSummary.totalItems }}</p>
     <p>Total Amount: ${{ orderSummary.totalAmount }}</p>
     <p>Total Discount: ${{ orderSummary.totalDiscount }}</p>
+
+    <!-- Display Applied Discount Codes if Any -->
     <div *ngIf="orderSummary.discountCodes.length > 0">
       <h4>Applied Discount Codes:</h4>
       <ul>
@@ -19,12 +24,27 @@
       </ul>
     </div>
 
-    <!-- Discount Section Here -->
+    <!-- Display Available Discount Codes -->
+    <div *ngIf="_availableDiscountCodes.length > 0">
+      <h4>Available Discount Codes:</h4>
+      <ul>
+        <li *ngFor="let code of _availableDiscountCodes">{{ code.code }} - {{ code.discountPercentage }}% off</li>
+      </ul>
+    </div>
+    <div *ngIf="_availableDiscountCodes.length === 0">
+      <p>No discount codes available at the moment.</p>
+    </div>
+
+    <!-- Discount Code Input and Apply Button -->
     <label for="discountCode">Discount Code:</label>
     <input id="discountCode" [(ngModel)]="_discountCode" placeholder="Enter code" />
     <button (click)="applyDiscount()">Apply Discount</button>
+
+    <!-- Finish Order Button -->
     <button (click)="finishOrder()">Finish Order</button>
   </div>
+
+  <!-- Display Message if Cart is Empty -->
   <div *ngIf="_cartItems.length === 0">
     <p>Your cart is empty.</p>
   </div>

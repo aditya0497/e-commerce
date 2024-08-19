@@ -20,9 +20,10 @@ export class ProductListComponent implements OnInit {
   constructor(private cartService: CartService) {}
 
   public ngOnInit(): void {
-    this.cartService.getCartItems().subscribe(items => {
-      this._cartItems = items;
-    });
+    this.cartService.getCartItems()
+      .subscribe(items => {
+        this._cartItems = items;
+      });
   }
 
   public addToCart(product: Product): void {
@@ -38,6 +39,7 @@ export class ProductListComponent implements OnInit {
   }
 
   public getQuantity(productId: number): number {
+    console.log(this._cartItems);
     const item = this._cartItems.find(item => item.product.id === productId);
     return item ? item.quantity : 0;
   }

@@ -8,7 +8,11 @@ export class MockBackendInterceptor implements HttpInterceptor {
 
   private orderSummaries: OrderSummary[] = [];
 
-  private discountCodes: DiscountCode[] = [{ code: 'DISCOUNT10', discountPercentage: 10 }];
+  private discountCodes: DiscountCode[] = [];
+
+  private orderCount = 0;  // Track the number of orders
+
+  private readonly n = 2;  // Configure the nth order for generating a discount code
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     if (req.url.endsWith('/api/apply-discount')) {
@@ -22,6 +26,19 @@ export class MockBackendInterceptor implements HttpInterceptor {
       if (!Array.isArray(cartItems)) {
         return of(new HttpResponse({ status: 400, body: 'Invalid cartItems' }));
       }
+
+      ++this.orderCount;  // Increment the order count on every checkout
+
+      // Check if it's the nth order and generate a new discount code if true
+      let newCode: string | null = null;
+      if ((this.orderCount + 1) % this.n === 0) {  // Ensure this is only true for every nth order
+        newCode = `DISCOUNT${Math.floor(Math.random() * 100)}`;
+        this.discountCodes.push({ code: newCode, discountPercentage: 10 });
+        console.log(`New discount code generated: ${newCode}`);
+      } else {
+        this.discountCodes = [];
+      }
+
       const totalItems = cartItems.reduce((sum: number, item: any) => sum + item.quantity, 0);
       const totalAmount = cartItems.reduce((sum: number, item: any) => sum + item.product.price * item.quantity, 0);
       const totalDiscount = discount ? (totalAmount * discount.discountPercentage) / 100 : 0;
@@ -33,7 +50,13 @@ export class MockBackendInterceptor implements HttpInterceptor {
       };
       this.orderSummaries.push(orderSummary);
 
-      return of(new HttpResponse({ status: 200, body: orderSummary }));
+      return of(new HttpResponse({
+        status: 200,
+        body: {
+          orderSummary,
+          newDiscountCode: newCode  // Send back the new discount code if one was generated
+        }
+      }));
     }
 
     if (req.url.endsWith('/api/admin/order-summaries')) {
@@ -48,6 +71,10 @@ export class MockBackendInterceptor implements HttpInterceptor {
 
     if (req.url.endsWith('/api/admin/record-order')) {
       return of(new HttpResponse({ status: 200 }));
+    }
+
+    if (req.url.endsWith('/api/available-discount-codes')) {
+      return of(new HttpResponse({ status: 200, body: this.discountCodes }));
     }
 
     return next.handle(req);
