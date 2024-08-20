@@ -35,6 +35,7 @@ This is an Angular-based e-commerce store application that allows users to brows
 - Increment or decrement product quantities in the cart
 - Checkout with discount code validation
 - Admin functionality for generating discount codes and viewing orders (might be useful for future implementations)
+- The nth order is currently configurable in the mock backend service file. For now, I have given a value of 2 to demo.
 
 ## Deployed on vercel environment
 The link to the vercel environment for live working is available on repo
