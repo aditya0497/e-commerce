@@ -29,15 +29,6 @@ export class CartService {
     this.cartItems.next(currentItems);
   }
 
-  public incrementQuantity(productId: number): void {
-    const currentItems = this.cartItems.getValue();
-    const item = currentItems.find(item => item.product.id === productId);
-    if (item) {
-      item.quantity += 1;
-      this.cartItems.next(currentItems);
-    }
-  }
-
   public decrementQuantity(productId: number): void {
     const currentItems = this.cartItems.getValue();
     const itemIndex = currentItems.findIndex(item => item.product.id === productId);
@@ -51,13 +42,6 @@ export class CartService {
       }
       this.cartItems.next(currentItems);
     }
-  }
-
-  public removeFromCart(productId: number): void {
-    const currentItems = this.cartItems.getValue();
-    const updatedItems = currentItems.filter(item => item.product.id !== productId);
-    console.log(currentItems, updatedItems);
-    this.cartItems.next(updatedItems);
   }
 
   public applyDiscount(code: string): Observable<DiscountCode | null> {

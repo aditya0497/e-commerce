@@ -13,11 +13,11 @@ export class AdminService {
     return this.http.get<OrderSummary[]>('/api/admin/order-summaries');
   }
 
-  generateDiscountCode(): Observable<string> {
+  generateDiscountCode(): Observable<string> { //for future purposes
     return this.http.get<string>('/api/admin/generate-discount-code');
   }
 
-  recordOrder(orderSummary: OrderSummary): Observable<void> {
+  recordOrder(orderSummary: OrderSummary): Observable<void> {   //for future purposes
     return this.http.post<void>('/api/admin/record-order', orderSummary);
   }
 }

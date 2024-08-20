@@ -30,16 +30,11 @@ export class ProductListComponent implements OnInit {
     this.cartService.addToCart(product);
   }
 
-  public incrementQuantity(productId: number): void {
-    this.cartService.incrementQuantity(productId);
-  }
-
   public decrementQuantity(productId: number): void {
     this.cartService.decrementQuantity(productId);
   }
 
   public getQuantity(productId: number): number {
-    console.log(this._cartItems);
     const item = this._cartItems.find(item => item.product.id === productId);
     return item ? item.quantity : 0;
   }
